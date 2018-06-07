@@ -1,0 +1,21 @@
+<form action="/songs/<%= @song.name %>/delete" method="post">
+  <input id="hidden" type="hidden" name="_method" value="delete">
+
+  <input type="submit" value="delete">
+</form>
+
+<form action="/songs/<%= @song.name %>/edit" method="post">
+  <input id="hidden" type="hidden" name="_method" value="edit">
+
+  <input type="submit" value="edit">
+</form>
+
+<div>
+  <p>Name: <%= @song.name %> </p>
+  <p>Artist: <a href="/artists/<%= @song_artist %>"><%= @song_artist %></a>
+  <p>Genre:</br>
+    <% @song_genre.each do |genre| %>
+    <a href="/genres/<%= genre.name %>"> <%= genre.name %>
+    <% end %>
+    </a>
+</div>

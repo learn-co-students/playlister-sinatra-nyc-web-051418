@@ -1,0 +1,9 @@
+
+<form method="post" action="/songs/<%=@song.name%>">
+  <input id="hidden" type="hidden" name="_method" value="patch">
+
+  Name<input id="name" type="text" value="<%=@song.name%>" name="name">
+  Artist<input id="artist" type="text" value="<%=@song.artist%>" name="artist">
+  
+  <input type="submit" value="submit">
+</form>
