@@ -9,10 +9,24 @@ class Genre < ActiveRecord::Base
   end
 
   def self.find_by_slug(slug)
-      name = slug.split("-").map do |word|
-          word.capitalize
-      end.join(" ")
+      name = slug.split("-").join(" ")
       Genre.find_by(name: name)
+  end
+
+  def artists
+      SongGenre.all.select do |song_genre|
+          self.id == song_genre.genre_id
+      end.map do |selected_song_genre|
+          selected_song_genre.song.artist
+      end
+  end
+
+  def songs
+      SongGenre.all.select do |song_genre|
+          self.id == song_genre.genre_id
+      end.map do |selected_song_genre|
+          selected_song_genre.song
+      end
   end
 
 end

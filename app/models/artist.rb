@@ -1,7 +1,7 @@
 class Artist < ActiveRecord::Base
 
   has_many :songs
-  has_many :genres#, through: :songs
+  has_many :genres, through: :songs
 
   def slug
       self.name.downcase.split(" ").join("-")
@@ -21,9 +21,10 @@ class Artist < ActiveRecord::Base
   end
 
   def genres
-      Genre.all.select do |genre|
-          binding.pry
-          genre.artist == self
+      SongGenre.all.select do |song_genre|
+          song_genre.song.artist_id == self.id
+      end.map do |selected_song_genre|
+          selected_song_genre.genre
       end
   end
 
