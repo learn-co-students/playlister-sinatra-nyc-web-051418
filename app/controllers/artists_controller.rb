@@ -3,25 +3,36 @@ class ArtistsController < ApplicationController
     get '/artists' do
       @artists = Artist.all
 
-      erb :index
+      erb :"artists/index"
     end
 
-    get 'artists/new' do
+    get '/artists/:slug' do
+      @artist = Artist.find_by_slug(params[:slug])
+      @songs = @artist.songs
+      @genres = @artist.genres
+      binding.pry
 
-        erb :new
+      erb :"artists/show"
     end
 
-    get 'artists/:slug' do
-      @artist = Artist.find_by(name: params[:name])
+    # get 'artists/new' do
+    #
+    #     erb :new
+    # end
 
-      erb :show
+    get '/artists/:id' do
+      @artist = Artist.find_by(id: params[:id])
+
+      erb :"artists/show"
     end
 
-    # get '/artists/:id' do
-    #   @artist = Artist.find_by(id: params[:id])
+    # get 'artists/:slug' do
+    #   @artist = Artist.find_by(name: params[:name])
     #
     #   erb :show
     # end
+
+
 
 
 end

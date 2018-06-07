@@ -15,4 +15,11 @@ class Song < ActiveRecord::Base
       Song.find_by(name: name)
   end
 
+  def genres
+      SongGenre.all.select do |song_genre|
+        
+          self.id == song_genre.song.id
+      end
+  end
+
 end
