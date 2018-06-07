@@ -8,7 +8,7 @@ class Song < ActiveRecord::Base
   end
 
   def self.find_by_name(song_slug)
-    Song.all.select do |song|
+    Song.all.find do |song|
       song.slug == song_slug
     end
   end

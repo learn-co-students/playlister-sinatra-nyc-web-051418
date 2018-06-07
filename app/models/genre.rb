@@ -8,7 +8,7 @@ class Genre < ActiveRecord::Base
   end
 
   def self.find_by_name(genre_slug)
-    Genre.all.select do |genre|
+    Genre.all.find do |genre|
       genre.slug == genre_slug
     end
   end
