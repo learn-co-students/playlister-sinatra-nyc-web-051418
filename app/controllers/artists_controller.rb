@@ -19,8 +19,6 @@ class ArtistsController < ApplicationController
     erb :'songs/new'
   end
 
-
-
   post '/songs' do
     @artist = Artist.find_or_create_by(params[:artist_name])
     @song = Song.create(name: params[:song_name], artist_id: @artist.id)
@@ -40,6 +38,17 @@ class ArtistsController < ApplicationController
     erb :'songs/edit'
   end
 
+  patch '/songs' do
+    @artist = Artist.find_or_create_by(params[:artist_name])
+    @song = Song.find_by(name: params[:song_name])
+     @genres = params[:genres].map do |genre|
+      Genre.find_by(id: genre)
+    end
+    # binding.pry
+    @song.update(name: params[:song_name], artist_id: @artist.id, genres: @genres)
+    redirect "songs/#{@song.slug}"
+  end
+
   get '/genres/:slug' do
     @genre = Genre.find_by_slug(params['slug'])
 
@@ -50,9 +59,6 @@ class ArtistsController < ApplicationController
     @artist = Artist.find_by_slug(params['slug'])
     erb :'artists/show'
   end
-
-
-
 
 
 end
