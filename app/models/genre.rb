@@ -7,7 +7,7 @@ class Genre < ActiveRecord::Base
     self.name.gsub(/[^a-zA-Z0-9\-]/,"-").downcase
   end
 
-  def self.find_by_name(genre_slug)
+  def self.find_by_slug(genre_slug)
     Genre.all.find do |genre|
       genre.slug == genre_slug
     end

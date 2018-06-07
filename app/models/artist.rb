@@ -6,9 +6,17 @@ class Artist < ActiveRecord::Base
     self.name.gsub(/[^a-zA-Z0-9\-]/,"-").downcase
   end
 
-  def self.find_by_name(artist_slug)
+  def self.find_by_slug(artist_slug)
     Artist.all.find do |artist|
       artist.slug == artist_slug
+    end
+  end
+
+  def self.find_or_create_by(name)
+    if self.find_by(name: name)
+      self.find_by(name: name)
+    else
+      Artist.create(name: name)
     end
   end
 

@@ -7,7 +7,7 @@ class Song < ActiveRecord::Base
     self.name.gsub(/[^a-zA-Z0-9\-]/,"-").downcase
   end
 
-  def self.find_by_name(song_slug)
+  def self.find_by_slug(song_slug)
     Song.all.find do |song|
       song.slug == song_slug
     end
