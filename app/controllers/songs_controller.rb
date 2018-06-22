@@ -1,33 +1,48 @@
+require 'rack-flash'
+
 class SongsController < ApplicationController
+  use Rack::Flash
 
   get '/songs' do
     @songs = Song.all
-    erb :"songs/index"
+    erb :'/songs/index'
+  end
+
+  get '/songs/new' do
+    erb :'/songs/new'
   end
 
   get '/songs/:slug' do
     @song = Song.find_by_slug(params[:slug])
-    @genres = @song.genres
-    @artist = @song.artist
-    erb :"songs/show"
+
+    erb :'songs/show'
   end
 
+  post '/songs' do
+    @song = Song.create(:name => params["Name"])
+    @song.artist = Artist.find_or_create_by(:name => params["Artist Name"])
+    @song.genre_ids = params[:genres]
+    @song.save
 
+    flash[:message] = "Successfully created song."
 
-  get '/songs/:id' do
-    @song = Song.find_by(id: params[:id])
-    erb :"songs/show"
+    redirect("/songs/#{@song.slug}")
   end
 
+  get '/songs/:slug/edit' do
+    @song = Song.find_by_slug(params[:slug])
+    erb :'songs/edit'
+  end
 
+  patch '/songs/:slug' do
+    @song = Song.find_by_slug(params[:slug])
+    @song.update(params[:song])
+    @song.artist = Artist.find_or_create_by(name: params[:artist][:name])
+    @song.genre_ids = params[:genres]
+    @song.save
+
+    flash[:message] = "Successfully updated song."
+    redirect("/songs/#{@song.slug}")
+  end
 
 end
-
-#
-# /songs
-# This should present the user with a list of all songs in the library.
-# Each song should be a clickable link to that particular song's show page.
-
-# /songs/:slug
-# Any given song's show page should have links to that song's artist and the each genre associated with the song.
-# Pay attention to the order of /songs/new and /songs/:slug. The route /songs/new could interpret new as a slug if that controller action isn't defined first.
